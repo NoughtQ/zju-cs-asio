@@ -121,8 +121,8 @@ class ASIOHelper:
         # ============================ #
         md_table = ''
         # render the title rows
-        line_title = '| Title | Description |'
-        line_split = '| :--- | :--- |'
+        line_title = '| Title | Description | Accessibility |'
+        line_split = '| :--- | :--- | :---: |'
         md_table += line_title + '\n'
         md_table += line_split + '\n'
         # render the data rows
@@ -135,15 +135,18 @@ class ASIOHelper:
             # URL encode for shields.io badge
             url_encoded = quote(url, safe='')
             # Generate small status badge with checkmark/cross (flat style)
-            status_badge = f'<img src="https://img.shields.io/website?url={url_encoded}&label=&up_message=✓&up_color=28a745&down_message=✗&down_color=dc3545&style=flat" alt="" height="14" />'
-            # Combine title link with status badge
-            line += f' <a href="{url}" target="_blank">{self.type_mapping[type_id][:1]} {title}</a> {status_badge} |'
+            # Use URL-encoded Unicode characters and empty label for clean icon-only display
+            status_badge = f'![status](https://img.shields.io/website?url={url_encoded}&label=&up_message=%E2%9C%93&up_color=brightgreen&down_message=%E2%9C%97&down_color=red&style=flat)'
+            # Title column (without badge)
+            line += f' <a href="{url}" target="_blank">{self.type_mapping[type_id][:1]} {title}</a> |'
 
             # description
             desc = row[2]
             if len(desc) > DESC_LIMIT:
                 desc = desc[:DESC_LIMIT] + '...'
             line += f' 🥑 {desc} |'
+            # Accessibility column (badge only)
+            line += f' {status_badge} |'
             # finish line
             md_table += line + '\n'
 
